@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name          Optimize Yandex Music v0.0.1
-// @version       0.0.1
+// @name          Optimize Yandex Music v0.0.2
+// @version       0.0.2
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на music.yandex.ru
 // @homepage      https://github.com/IgorNovozhilov/UserScript
