@@ -58,7 +58,9 @@
       if (cont_shown) {
          document.head.removeChild(cont_shown_style);
       } else {
-         document.head.appendChild(cont_shown_style);
+         if (!document.querySelector('#CSS-Optimize-Yandex-Music__cont_shown')) {
+            document.head.appendChild(cont_shown_style);
+         }
       }
    }, false);
 })(unsafeWindow);
