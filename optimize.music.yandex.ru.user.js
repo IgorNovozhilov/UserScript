@@ -27,7 +27,9 @@
       div.sidebar__placeholder .app-sms__content,
       div.subscription-hint.popup,
       div.player-controls .player-controls__seq-controls .hq,
-      div.page-users__bar .payment-bar
+      div.page-users__bar .payment-bar,
+      div.page-search .ads-block,
+      div.page-search .ads-block__no-ads
       {
          display: none !important;
       }
