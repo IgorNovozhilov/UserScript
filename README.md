@@ -5,4 +5,4 @@
 
 | До | После |
 |---|---|
-| <img src="https://github.com/IgorNovozhilov/UserScript/raw/master/image/optimize.music.yandex.ru/before.png" width="410"> | <img src="https://github.com/IgorNovozhilov/UserScript/raw/master/image/optimize.music.yandex.ru/after.png" width="410"> |
+| <img src="https://github.com/IgorNovozhilov/UserScript/raw/master/image/optimize.music.yandex.ru/before.png" width="415"> | <img src="https://github.com/IgorNovozhilov/UserScript/raw/master/image/optimize.music.yandex.ru/after.png" width="415"> |
