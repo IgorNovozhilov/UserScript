@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          SBIS Extended Platform API
-// @version       0.0.3
+// @version       0.0.4
 // @author        Новожилов И. А.
 // @description   Расширенное АПИ для работы с платформой SBIS
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -67,11 +67,13 @@
         deps_map[component] = [];
         continue;
       }
-      let resp = await fetch(path);
-      if (resp.status !== 200) {
-        throw Error(`ERROR MODULE '${component}': '${path}'`);
-      }
+      let resp = await fetch(path, {
+        credentials: 'same-origin'
+      });
       let text = await resp.text();
+      if (resp.status !== 200) {
+        throw Error(`ERROR MODULE '${component}': '${path}'\n${text}`);
+      }
       let deps = text.replace(/[\s\S]*define\s*\([^\[]+\[([^\]]+)\][\s\S]*/, '$1').trim().split(',');
       deps = deps.map((item) => item.trim().replace(/['"]/g, ''));
       deps_map[component] = deps;
