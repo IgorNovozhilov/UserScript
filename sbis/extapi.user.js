@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          SBIS Extended Platform API
-// @version       0.0.2
+// @version       0.0.3
 // @author        Новожилов И. А.
 // @description   Расширенное АПИ для работы с платформой SBIS
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -14,32 +14,98 @@
 // @noframes
 // ==/UserScript==
 /* global unsafeWindow */
-'use strict';
 ((window) => {
+  'use strict';
   const $extapi = window.$extapi = {};
 
-  $extapi.get_visual_components_map = () => new Promise((resolve, reject) => {
-    var map = [];
-    window.require(['js!SBIS3.CORE.Control'], (CControl) => {
-      try {
-        const cs = CControl.ControlStorage._storage;
-        for (let name in cs) {
-          let control = cs[name];
-          if (control._container) {
-            let cmp_name = control._container.attr('data-component');
-            if (cmp_name) {
-              map.push(cmp_name);
-            }
-          }
-        }
-        map = map.filter(function (item, pos) {
-          return map.indexOf(item) == pos;
-        });
-        resolve(map);
-      } catch (err) {
-        reject(err);
-      }
+  /**
+   * Промифицированный require
+   */
+  $extapi.p_require = (...args) => new Promise((resolve) => {
+    window.require(...args, (...modules) => {
+      resolve(modules);
     });
   });
+
+  /**
+   * Список визуальных компонентов на странице
+   */
+  $extapi.get_visual_components_map = async() => {
+    var map = [];
+    var dcs = window.document.querySelectorAll('[data-component]');
+    dcs.forEach(function (element) {
+      map.push(element.getAttribute('data-component'));
+    }, this);
+    var [CControl] = await $extapi.p_require(['js!SBIS3.CORE.Control']);
+    const cs = CControl.ControlStorage._storage;
+    for (let name in cs) {
+      let control = cs[name];
+      if (control._container) {
+        let cmp_name = control._container.get(0).getAttribute('data-component');
+        if (cmp_name) {
+          map.push(cmp_name);
+        }
+      }
+    }
+    map = map.filter((item, pos) => map.indexOf(item) == pos);
+    return map;
+  };
+
+  /**
+   * Зависимсоти для списка компонентов
+   */
+  $extapi.get_components_dependencies = async(components) => {
+    const [constants] = (await $extapi.p_require(['Core/constants']));
+    const deps_map = {};
+    for (let component of components) {
+      let path = constants.jsModules[component];
+      if (!path && constants.jsCoreModules[component]) {
+        path = constants.wsRoot + constants.jsCoreModules[component];
+      }
+      if (!path) {
+        console.error(`NOT FOUND: ${component}`);
+        deps_map[component] = [];
+        continue;
+      }
+      let resp = await fetch(path);
+      if (resp.status !== 200) {
+        throw Error(`ERROR MODULE '${component}': '${path}'`);
+      }
+      let text = await resp.text();
+      let deps = text.replace(/[\s\S]*define\s*\([^\[]+\[([^\]]+)\][\s\S]*/, '$1').trim().split(',');
+      deps = deps.map((item) => item.trim().replace(/['"]/g, ''));
+      deps_map[component] = deps;
+    }
+    return deps_map;
+  };
+
+  /**
+   * JS зависимости для списка компонентов
+   */
+  $extapi.get_components_jsmod_dependencies = async(components) => {
+    const deps_map = await $extapi.get_components_dependencies(components);
+    for (let conponent in deps_map) {
+      let deps = deps_map[conponent];
+      deps = deps.filter((item) => /js!/.test(item) || !/!/.test(item));
+      deps = deps.map((item) => item.replace(/js!/, ''));
+      deps_map[conponent] = deps;
+    }
+    return deps_map;
+  };
+
+  /**
+   * Список визуальных компонентов на странице, с зависимостями первого уровня
+   */
+  $extapi.get_visual_components_map_with_deps = async(components) => {
+    components = components || await $extapi.get_visual_components_map();
+    let all_components = components.slice();
+    for (let component of components) {
+      let deps = (await $extapi.get_components_jsmod_dependencies([component]))[component];
+      if (deps) {
+        all_components.push(...deps);
+      }
+    }
+    return all_components.filter((item, pos) => all_components.indexOf(item) == pos);
+  };
 
 })(unsafeWindow);
