@@ -33,9 +33,7 @@
   $extapi.get_visual_components_map = async() => {
     var map = [];
     var dcs = window.document.querySelectorAll('[data-component]');
-    dcs.forEach(function (element) {
-      map.push(element.getAttribute('data-component'));
-    }, this);
+    dcs.forEach((element) => map.push(element.getAttribute('data-component')));
     var [CControl] = await $extapi.p_require(['js!SBIS3.CORE.Control']);
     const cs = CControl.ControlStorage._storage;
     for (let name in cs) {
