@@ -1,0 +1,6 @@
+{
+  "indent_size": 2,
+  "brace_style": "collapse,preserve-inline",
+  "space_after_anon_function": true,
+  "space_in_empty_paren": true
+}
