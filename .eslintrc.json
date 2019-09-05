@@ -8,9 +8,9 @@
     "browser": true
   },
   "rules": {
-    "strict": "warn",
+    "camelcase": "warn",
     "indent": ["warn", 2, { "SwitchCase": 1 }],
-    "semi": ["warn", "always"],
+    "semi": ["warn", "never"],
     "no-trailing-spaces": "warn",
     "quotes": ["warn", "single", { "avoidEscape": true }],
     "no-console": "off"

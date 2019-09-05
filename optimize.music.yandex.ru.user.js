@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Music v0.0.12
-// @version       0.0.12
+// @version       0.0.13
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на music.yandex.ru
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -12,71 +12,37 @@
 // @grant         unsafeWindow
 // @noframes
 // ==/UserScript==
-/* jshint esnext:true */
-(function(window) {
-   var document = window.document;
-   var style = document.createElement('style');
-   style.id = 'CSS-Optimize-Yandex-Music';
-   style.type = 'text/css';
-   style.innerHTML = `
-      div.overhead.overhead_theme_adv,
-      div.sidebar__placeholder .teaser,
-      div.sidebar__placeholder .slider-hider__content,
-      div.sidebar__placeholder .ads-block.smalladv.ads-block_side,
-      div.sidebar__placeholder .ads-block__no-ads,
-      div.sidebar__placeholder .app-sms__content,
-      div.subscription-hint.popup,
-      div.player-controls .player-controls__seq-controls .hq,
-      div.page-users__bar .payment-bar,
-      div.page-search .ads-block,
-      div.page-search .ads-block__no-ads,
-      div.centerblock .app-sms
+/* globals unsafeWindow */
+(function (window) {
+  const document = window.document
+  const myStyle = `
+    .centerblock + .sidebar__sticky,
+    .page-root > div:nth-of-type(1):not(.head),
+    .page-root > div:nth-of-type(2):not(.head),
+    .bar .bar-below_plus,
+    .centerblock-wrapper .footer,
+    .player-controls__seq-controls .hq,
+    .subscription-hint
       {
-         display: none !important;
+        display: none !important;
       }
-      div.centerblock{
-         padding: 16px 16px 0 !important;
+    .centerblock-wrapper
+      {
+        width: 100%;
       }
-      div.centerblock-wrapper1 {
-         width: auto !important;
+    .layout_narrow .centerblock-wrapper
+      {
+        margin-right: 0px;
       }
-      div.footer {
-         display: none !important;
-      }
-   `;
-   document.head.appendChild(style);
-   var cont_shown_style = document.createElement('style');
-   cont_shown_style.id = 'CSS-Optimize-Yandex-Music__cont_shown';
-   cont_shown_style.type = 'text/css';
-   cont_shown_style.innerHTML = `
-      div.sidebar__placeholder {
-         display: none !important;
-      }
-      body.layout_narrow .centerblock-wrapper {
-         margin-right: 0 !important;
-      }
-      div.centerblock-wrapper {
-         width: auto !important;
-      }
-      div.page-search__main {
-         max-width: none !important;
-         margin-right: 64px !important;
-      }
-      @media (max-width: 960px) {
-         div.page-search__main {
-            margin-right: 46px !important;
-         }
-      }
-   `;
-   document.head.appendChild(cont_shown_style);
-   document.addEventListener("DOMNodeInserted", function(ev) {
-      var cont_shown = document.querySelector('div.sidebar__placeholder .sidebar-cont.sidebar-cont_shown');
-      if (cont_shown) {
-         document.head.removeChild(cont_shown_style);
-      } else {
-         if (!document.querySelector('#CSS-Optimize-Yandex-Music__cont_shown')) {
-            document.head.appendChild(cont_shown_style);
-         }
-      }
-   }, false);
-})(unsafeWindow);
+  `
+  const style = document.createElement('style')
+  style.id = 'CSS-Optimize-Yandex-Music'
+  style.type = 'text/css'
+  style.innerHTML = myStyle
+  document.head.appendChild(style)
+  style.addEventListener('DOMSubtreeModified', () => {
+    if (style.innerHTML !== myStyle) {
+      style.innerHTML = myStyle
+    }
+  })
+})(unsafeWindow)
