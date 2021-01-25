@@ -1,18 +1,23 @@
 {
-  "extends": "eslint:recommended",
+  "extends": [
+    "eslint:recommended",
+    "standard"
+  ],
   "parserOptions": {
     "ecmaVersion": 2017
+  },
+  "rules": {
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ]
   },
   "env": {
     "es6": true,
     "browser": true
-  },
-  "rules": {
-    "camelcase": "warn",
-    "indent": ["warn", 2, { "SwitchCase": 1 }],
-    "semi": ["warn", "never"],
-    "no-trailing-spaces": "warn",
-    "quotes": ["warn", "single", { "avoidEscape": true }],
-    "no-console": "off"
   }
 }
