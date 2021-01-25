@@ -11,9 +11,11 @@
 // @run-at        document-start
 // @grant         unsafeWindow
 // @noframes
+// @require       https://cdn.jsdelivr.net/npm/@notml/core@0.0/core-global.min.js
 // ==/UserScript==
-/* global unsafeWindow */
-((window) => {
+/* global unsafeWindow, $oom */
+
+((window, $oom) => {
   'use strict'
 
   const hKeys = {
@@ -38,6 +40,8 @@
       }
     })
 
+    console.log($oom)
+
     debugger
   }
 
@@ -60,4 +64,4 @@
   }, {
     capture: true
   })
-})(unsafeWindow)
+})(unsafeWindow, $oom)
