@@ -18,12 +18,22 @@
 ((window, $oom) => {
   'use strict'
 
+  const branchDialog = $oom('div', {
+    class: 'UI-Customizer__GetGitBranch-Dialog',
+    style: { display: 'none' }
+  }).append($oom
+    .div({ class: 'UI-Customizer__GetGitBranch-BG' }))
+
   const hKeys = {
     'ctrl-shift-KeyB': () => copyBranchName(),
     'ctrl-alt-KeyB': () => copyBranchName(),
     'alt-KeyB': () => copyBranchName(),
     'ctrl-KeyB': () => copyBranchName()
   }
+
+  window.document.body.append(branchDialog.dom)
+
+  console.log(branchDialog)
 
   function copyBranchName() {
     const edoDialogs = document.querySelectorAll('.edo3-Dialog')
