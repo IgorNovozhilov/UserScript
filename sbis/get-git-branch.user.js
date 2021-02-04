@@ -11,18 +11,11 @@
 // @run-at        document-start
 // @grant         unsafeWindow
 // @noframes
-// @require       https://cdn.jsdelivr.net/npm/@notml/core@^0.0.4/core-global.min.js
+// @require       https://cdn.jsdelivr.net/npm/@notml/core@^0.0.5/core-global.min.js
 // ==/UserScript==
 /* global unsafeWindow, $oom */
 
 class GetGitBranchDialog extends unsafeWindow.HTMLElement {
-
-  hKeysEvents = {
-    'ctrl-shift-KeyB': () => this.toggleOpen(),
-    'ctrl-alt-KeyB': () => this.toggleOpen(),
-    'alt-KeyB': () => this.toggleOpen(),
-    'ctrl-KeyB': () => this.toggleOpen()
-  }
 
   isOpen = false
 
@@ -58,11 +51,16 @@ class GetGitBranchDialog extends unsafeWindow.HTMLElement {
 
   }
 
+  shadowRootInit = { mode: 'open' }
+
   template = () => $oom
     .div({ style: { display: 'none' } })
 
-  connectedCallback() {
-
+  hKeysEvents = {
+    'ctrl-shift-KeyB': () => this.toggleOpen(),
+    'ctrl-alt-KeyB': () => this.toggleOpen(),
+    'alt-KeyB': () => this.toggleOpen(),
+    'ctrl-KeyB': () => this.toggleOpen()
   }
 
   onkeydown(event) {
