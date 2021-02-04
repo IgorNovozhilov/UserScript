@@ -11,7 +11,7 @@
 // @run-at        document-start
 // @grant         unsafeWindow
 // @noframes
-// @require       https://cdn.jsdelivr.net/npm/@notml/core@^0.0.5/core-global.min.js
+// @require       https://cdn.jsdelivr.net/npm/@notml/core@^0.0.6/core-global.min.js
 // ==/UserScript==
 /* global unsafeWindow, $oom */
 
@@ -53,7 +53,7 @@ class GetGitBranchDialog extends unsafeWindow.HTMLElement {
 
   shadowRootInit = { mode: 'open' }
 
-  template = () => $oom
+  template = $oom
     .div({ style: { display: 'none' } })
 
   hKeysEvents = {
