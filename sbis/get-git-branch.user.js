@@ -11,31 +11,33 @@
 // @run-at        document-start
 // @grant         unsafeWindow
 // @noframes
-// @require       https://cdn.jsdelivr.net/npm/@notml/core@0.0/core-global.min.js
+// @require       https://cdn.jsdelivr.net/npm/@notml/core@^0.0.4/core-global.min.js
 // ==/UserScript==
 /* global unsafeWindow, $oom */
 
-((window, $oom) => {
-  'use strict'
+class GetGitBranchDialog extends unsafeWindow.HTMLElement {
 
-  const branchDialog = $oom('div', {
-    class: 'UI-Customizer__GetGitBranch-Dialog',
-    style: { display: 'none' }
-  }).append($oom
-    .div({ class: 'UI-Customizer__GetGitBranch-BG' }))
-
-  const hKeys = {
-    'ctrl-shift-KeyB': () => copyBranchName(),
-    'ctrl-alt-KeyB': () => copyBranchName(),
-    'alt-KeyB': () => copyBranchName(),
-    'ctrl-KeyB': () => copyBranchName()
+  hKeysEvents = {
+    'ctrl-shift-KeyB': () => this.toggleOpen(),
+    'ctrl-alt-KeyB': () => this.toggleOpen(),
+    'alt-KeyB': () => this.toggleOpen(),
+    'ctrl-KeyB': () => this.toggleOpen()
   }
 
-  window.document.body.append(branchDialog.dom)
+  isOpen = false
 
-  console.log(branchDialog)
+  toggleOpen() {
+    if (this.isOpen) {
+      this.isOpen = false
+      this.style.display = 'none'
+    } else {
+      this.prepareCurrentBranches()
+      this.isOpen = true
+      this.style.display = ''
+    }
+  }
 
-  function copyBranchName() {
+  prepareCurrentBranches() {
     const edoDialogs = document.querySelectorAll('.edo3-Dialog')
     const records = []
 
@@ -50,12 +52,20 @@
       }
     })
 
-    console.log($oom)
+    if (records.length > 0) {
+      debugger
+    }
 
-    debugger
   }
 
-  document.addEventListener('keydown', (event) => {
+  template = () => $oom
+    .div({ style: { display: 'none' } })
+
+  connectedCallback() {
+
+  }
+
+  onkeydown(event) {
     let keyName = ''
     if (event.ctrlKey) {
       keyName += 'ctrl-'
@@ -67,11 +77,29 @@
       keyName += 'alt-'
     }
     keyName += event.code
-    if (keyName in hKeys) {
-      hKeys[keyName]()
+    if (keyName in this.hKeysEvents) {
+      this.hKeysEvents[keyName](event)
       event.stopPropagation()
     }
-  }, {
-    capture: true
-  })
-})(unsafeWindow, $oom)
+  }
+
+  constructor() {
+    super()
+    this._onkeydown = event => this.onkeydown(event)
+  }
+
+  connectedCallback() {
+    unsafeWindow.addEventListener('keydown', this._onkeydown, {
+      capture: true
+    })
+  }
+
+  disconnectedCallback() {
+    unsafeWindow.removeEventListener('keydown', this._onkeydown)
+  }
+
+}
+
+
+unsafeWindow.document.body.append($oom.define(GetGitBranchDialog)
+  .GetGitBranchDialog({ style: { display: 'none' } }).dom)
