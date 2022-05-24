@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Radio
-// @version       0.0.1
+// @version       0.0.2
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на radio.yandex.ru, и доп опции по управлению воспроизведением
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -26,11 +26,19 @@
       position: fixed;
       bottom: 0;
       left: 0;
-      padding: 6px;
+      padding: 2px;
     }
     .oyr__autoplay_checkbox {
       display: flex;
       align-items: center;
+      font-size: 16px;
+      color: #777;
+      padding: 6px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .oyr__autoplay_checkbox:hover {
+      background: #eee;
     }
     .oyr__autoplay_checkbox input {
       margin-right: 6px;
@@ -61,19 +69,30 @@
   html.innerHTML = myHtml
   document.body.appendChild(html)
 
+  const playBtn = document.querySelector('.player-controls__play')
   const autoplayCheckbox = document.getElementById('oyr__autoplay_checkbox')
   let autoplayCheckboxInterval = null
+
   autoplayCheckbox.onchange = () => {
     if (autoplayCheckbox.checked) {
       autoplayCheckboxInterval = setInterval(() => {
         const isPlay = document.querySelector('.body_state_playing')
-        if (!isPlay) {
-          const playElm = document.querySelector('.player-controls__play')
-          playElm.click()
-        }
+        if (!isPlay) playBtn.click()
       }, 1000)
     } else {
       clearInterval(autoplayCheckboxInterval)
+      const isPlay = document.querySelector('.body_state_playing')
+      if (isPlay) playBtn.click()
+    }
+  }
+
+  playBtn.onclick = event => {
+    if (event.isTrusted) {
+      const isPlay = document.querySelector('.body_state_playing')
+      if (isPlay) {
+        autoplayCheckbox.checked = false
+        clearInterval(autoplayCheckboxInterval)
+      }
     }
   }
 })(unsafeWindow)
