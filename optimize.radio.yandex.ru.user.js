@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Radio
-// @version       0.0.3
+// @version       0.0.4
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на radio.yandex.ru, и доп опции по управлению воспроизведением
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -70,35 +70,24 @@
   document.body.appendChild(html)
 
   const playBtn = document.querySelector('.player-controls__play')
-  const autoplayCheckbox = document.getElementById('oyr__autoplay_checkbox')
-  let autoplayCheckboxInterval = null
+  const autoPlayCheckbox = document.getElementById('oyr__autoplay_checkbox')
 
-  autoplayCheckbox.onchange = () => {
-    window.localStorage.setItem('oyr__autoplay_checkbox', autoplayCheckbox.checked + '')
-    if (autoplayCheckbox.checked) {
-      autoplayCheckboxInterval = setInterval(() => {
-        const isPlay = document.querySelector('.body_state_playing')
-        if (!isPlay) playBtn.click()
-      }, 1000)
-    } else {
-      clearInterval(autoplayCheckboxInterval)
-      const isPlay = document.querySelector('.body_state_playing')
-      if (isPlay) playBtn.click()
-    }
-  }
-  if (window.localStorage.getItem('oyr__autoplay_checkbox') === 'true') {
-    autoplayCheckbox.checked = true
-    autoplayCheckbox.onchange()
+  autoPlayCheckbox.checked = window.localStorage.getItem('oyr__autoplay_checkbox') === 'true'
+
+  setInterval(clickPlay, 1000)
+
+  function clickPlay() {
+    const isPlay = document.querySelector('.body_state_playing')
+    if (!isPlay === autoPlayCheckbox.checked) playBtn.click()
   }
 
-  playBtn.onclick = event => {
-    if (event.isTrusted) {
-      const isPlay = document.querySelector('.body_state_playing')
-      if (isPlay) {
-        autoplayCheckbox.checked = false
-        window.localStorage.setItem('oyr__autoplay_checkbox', autoplayCheckbox.checked + '')
-        clearInterval(autoplayCheckboxInterval)
-      }
-    }
+  function autoPlay({ toggle = true, click = true }) {
+    if (toggle) autoPlayCheckbox.checked = !autoPlayCheckbox.checked
+    if (click) clickPlay()
+    window.localStorage.setItem('oyr__autoplay_checkbox', autoPlayCheckbox.checked + '')
   }
+
+  autoPlayCheckbox.onchange = () => autoPlay({ toggle: false })
+  playBtn.onclick = event => { if (event.isTrusted) autoPlay({ click: false }) }
+  if (autoPlayCheckbox.checked) autoPlay({ toggle: false, click: false })
 })(unsafeWindow)
