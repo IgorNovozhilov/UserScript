@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Radio
-// @version       0.0.4
+// @version       0.0.5
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на radio.yandex.ru, и доп опции по управлению воспроизведением
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -71,14 +71,25 @@
 
   const playBtn = document.querySelector('.player-controls__play')
   const autoPlayCheckbox = document.getElementById('oyr__autoplay_checkbox')
+  let missClickCounter = 0
 
   autoPlayCheckbox.checked = window.localStorage.getItem('oyr__autoplay_checkbox') === 'true'
 
-  setInterval(clickPlay, 1000)
+  const clickPlayInterval = setInterval(clickPlay, 1000)
 
   function clickPlay() {
     const isPlay = document.querySelector('.body_state_playing')
-    if (!isPlay === autoPlayCheckbox.checked) playBtn.click()
+    if (!isPlay === autoPlayCheckbox.checked) {
+      if (missClickCounter > 6) {
+        clearInterval(clickPlayInterval)
+        window.location.reload()
+      } else {
+        playBtn.click()
+        missClickCounter++
+      }
+    } else {
+      missClickCounter = 0
+    }
   }
 
   function autoPlay({ toggle = true, click = true }) {
