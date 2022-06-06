@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Music
-// @version       0.0.17
+// @version       0.1.0
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на music.yandex.ru
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -23,20 +23,52 @@
     .player-controls__seq-controls .hq,
     .subscription-hint,
     .multi-auth__container .multi-auth__plus,
-    .plus-points.head-kids__plus-points
-      {
+    .plus-points.head-kids__plus-points {
         display: none !important;
-      }
-    .centerblock-wrapper
-      {
+    }
+    .centerblock-wrapper {
         width: 100%;
-      }
-    .layout_narrow .centerblock-wrapper
-      {
+    }
+    .layout_narrow .centerblock-wrapper {
         margin-right: 0px;
-      }
+    }
+    .oym__autoplay_content {
+      display: inline-block;
+      height: 60px;
+    }
+    .oym__autoplay_container{
+      height: 100%;
+      display: flex;
+      align-items: center;
+    }
+    .oym__autoplay_checkbox {
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      color: #777;
+      padding: 6px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .oym__autoplay_checkbox:hover {
+      background: #eee;
+    }
+    .oym__autoplay_checkbox input {
+      margin-right: 6px;
+    }
   `
+  const myHtml = `
+    <div class="oym__autoplay_container">
+      <label class="oym__autoplay_checkbox">
+        <input id="oym__autoplay_checkbox" type="checkbox">
+        auto-play
+      </label>
+    </div>
+  `
+
   const style = document.createElement('style')
+  const html = document.createElement('div')
+
   style.id = 'CSS-Optimize-Yandex-Music'
   style.type = 'text/css'
   style.innerHTML = myStyle
@@ -46,4 +78,34 @@
       style.innerHTML = myStyle
     }
   })
+
+  html.id = 'oym__autoplay_content'
+  html.className = 'oym__autoplay_content'
+  html.checked = false
+  html.innerHTML = myHtml
+  document
+    .querySelector('.player-controls__seq-controls')
+    .prepend(html)
+
+  const playBtn = document.querySelector('.player-controls__btn_play')
+  const autoPlayCheckbox = document.getElementById('oym__autoplay_checkbox')
+
+  autoPlayCheckbox.checked = window.localStorage.getItem('oym__autoplay_checkbox') === 'true'
+
+  setInterval(clickPlay, 1000)
+
+  function clickPlay() {
+    const isPlay = document.querySelector('.player-controls__btn_pause')
+    if (!isPlay === autoPlayCheckbox.checked) playBtn.click()
+  }
+
+  function autoPlay({ toggle = true, click = true }) {
+    if (toggle) autoPlayCheckbox.checked = !autoPlayCheckbox.checked
+    if (click) clickPlay()
+    window.localStorage.setItem('oym__autoplay_checkbox', autoPlayCheckbox.checked + '')
+  }
+
+  autoPlayCheckbox.onchange = () => autoPlay({ toggle: false })
+  playBtn.onclick = event => { if (event.isTrusted) autoPlay({ click: false }) }
+  if (autoPlayCheckbox.checked) autoPlay({ toggle: false, click: false })
 })(unsafeWindow)
