@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Music
-// @version       0.1.1
+// @version       0.1.2
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на music.yandex.ru
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -15,6 +15,9 @@
 (function (window) {
   const document = window.document
   const myStyle = `
+    html {
+      overflow-y: auto !important;
+    }
     .centerblock + .sidebar__sticky,
     .page-root > div:nth-of-type(1):not(.head),
     .page-root > div:nth-of-type(2):not(.head),
@@ -28,9 +31,72 @@
     }
     .centerblock-wrapper {
         width: 100%;
+        padding-bottom: 70px !important;
+    }
+    .branding.branding-pane {
+      display: none !important;
+    }
+    .head-kids .head-kids__wrap {
+      height: auto !important;
+      line-height: normal !important;
+    }
+    .head-kids .head-kids__controlls {
+      position: inherit !important;
+    }
+    .head-kids .d-logo {
+      margin-left: 18px;
+    }
+    .centerblock {
+      padding: 7px 16px 0;
+      min-height: 400px;
     }
     .layout_narrow .centerblock-wrapper {
         margin-right: 0px;
+    }
+    .page-users__tabs {
+      margin: 0 0 8px;
+    }
+    .d-generic-page-head {
+      min-height: 0;
+      margin: 0 !important;
+    }
+    .d-generic-page-head .d-generic-page-head__aside,
+    .d-generic-page-head .deco-typo-secondary.typo-add  {
+      display: none !important;
+    }
+    .d-generic-page-head .d-generic-page-head__main {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+    .d-generic-page-head .page-users__title {
+      margin: 0 !important;
+      font-size: 24px;
+    }
+    .d-generic-page-head .d-generic-page-head__main-bottom {
+      margin: 0;
+      flex: 1;
+    }
+    .d-generic-page-head .d-generic-page-head__main-actions,
+    .d-generic-page-head .d-generic-page-head__main-side-actions {
+      display: flex;
+      align-items: center;
+    }
+    .page-radio__dashboard {
+      margin: 0;
+    }
+    .page-radio__dashboard-column {
+      margin: 0px 8px 8px;
+    }
+    .page-radio .d-header__title {
+      margin: 0 0 6px 0;
+    }
+    .page-radio .d-header__title-text {
+      font-size: 24px;
+      line-height: 50px;
+    }
+    .playlist {
+      height: 250px !important;
     }
     .oym__autoplay_content {
       display: inline-block;
