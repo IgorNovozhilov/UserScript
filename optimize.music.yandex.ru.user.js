@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Music
-// @version       0.1.2
+// @version       0.1.3
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на music.yandex.ru
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -153,27 +153,55 @@
     .querySelector('.player-controls__seq-controls')
     .prepend(html)
 
+  const centerblock = document.querySelector('.centerblock')
   const playBtn = document.querySelector('.player-controls__btn_play')
   const autoPlayCheckbox = document.getElementById('oym__autoplay_checkbox')
 
   autoPlayCheckbox.checked = window.localStorage.getItem('oym__autoplay_checkbox') === 'true'
 
-  setInterval(clickPlay, 1000)
+  let trustedAction = false
 
-  function clickPlay() {
+  setInterval(function playWatcher() {
     const isPlay = document.querySelector('.player-controls__btn_pause')
     const crackdownClose = document.querySelector('.crackdown-popup__close')
-    if (!isPlay === autoPlayCheckbox.checked) playBtn.click()
+    if (!isPlay === autoPlayCheckbox.checked) {
+      if (trustedAction) {
+        autoPlay({ click: false })
+      } else {
+        playBtn.click()
+      }
+    }
+    trustedAction = false
     if (crackdownClose) crackdownClose.click()
-  }
+  }, 500)
 
   function autoPlay({ toggle = true, click = true }) {
+    const isPlay = document.querySelector('.player-controls__btn_pause')
     if (toggle) autoPlayCheckbox.checked = !autoPlayCheckbox.checked
-    if (click) clickPlay()
+    if (click && !isPlay === autoPlayCheckbox.checked) playBtn.click()
     window.localStorage.setItem('oym__autoplay_checkbox', autoPlayCheckbox.checked + '')
   }
 
+  function userClickPlay(event) {
+    if (event.isTrusted) trustedAction = true
+  }
+
+  function userClickCenterblockPlay(event) {
+    if (event.isTrusted) {
+      const clsl = event.target.classList
+      const trustedElm = clsl.contains('button-play') ||
+        clsl.contains('d-icon_play-small') ||
+        clsl.contains('deco-button-stylable') ||
+        clsl.contains('radio-station-dashboard__fg') ||
+        clsl.contains('radio-station-dashboard__hover') ||
+        clsl.contains('radio-station-dashboard__name') ||
+        clsl.contains('radio-station-dashboard__nowPlaying')
+      if (trustedElm) trustedAction = true
+    }
+  }
+
   autoPlayCheckbox.onchange = () => autoPlay({ toggle: false })
-  playBtn.onclick = event => { if (event.isTrusted) autoPlay({ click: false }) }
+  playBtn.onclick = event => userClickPlay(event)
+  centerblock.onclick = event => userClickCenterblockPlay(event)
   if (autoPlayCheckbox.checked) autoPlay({ toggle: false, click: false })
 })(unsafeWindow)
