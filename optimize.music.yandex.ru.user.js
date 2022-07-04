@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name          Optimize Yandex Music
-// @version       0.1.3
+// @version       0.1.4
 // @author        Новожилов И. А.
 // @description   Скрытие рекламы на music.yandex.ru
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -200,8 +200,15 @@
     }
   }
 
+  function userPressPlayKeyboard(event) {
+    if (event.isTrusted && event.key === ' ') {
+      trustedAction = true
+    }
+  }
+
   autoPlayCheckbox.onchange = () => autoPlay({ toggle: false })
   playBtn.onclick = event => userClickPlay(event)
   centerblock.onclick = event => userClickCenterblockPlay(event)
+  document.addEventListener('keydown', userPressPlayKeyboard, { capture: true })
   if (autoPlayCheckbox.checked) autoPlay({ toggle: false, click: false })
 })(unsafeWindow)
