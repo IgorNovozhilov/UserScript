@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Ikariam Customizer
 // @namespace     ikariam-customizer
-// @version       0.0.2
+// @version       0.0.3
 // @author        IgorNovozhilov
 // @description   Персональная настройка Ikariam
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -36,7 +36,6 @@
     #sidebar .accordionItem:has(#premiumAdvisorSidebar),
     #sidebar .accordionItem:has(#ambrosiaDonateForm),
     #setWorkersBox .adVideoPremiumOffer,
-    .buildingDescription,
     #dailyTasks .modifiedHint:has(.adVideoButton),
     #footer {
       display: none !important;
@@ -80,6 +79,19 @@
       top: 68px !important;
     }
 
+    #header #cityResources li.actions,
+    #header #cityResources li.population {
+      top: -31px !important;
+    }
+
+    #header #cityResources li.wood,
+    #header #cityResources li.wine,
+    #header #cityResources li.marble,
+    #header #cityResources li.glass,
+    #header #cityResources li.sulfur {
+      top: -1px !important;
+    }
+
     #header #topnavi {
       height: 124px;
       background-size: 642px 124px;
@@ -111,6 +123,18 @@
 
     #setWorkers .content {
       min-height: 0;
+    }
+
+    #finances hr {
+      margin: -1px !important;
+    }
+
+    #finances .table01 tr {
+      height: 26px !important;
+    }
+
+    #finances .table01 td {
+      padding: 1px 7px !important;
     }
   `
 
