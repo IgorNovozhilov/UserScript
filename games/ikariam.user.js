@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Ikariam Customizer
 // @namespace     ikariam-customizer
-// @version       0.0.1
+// @version       0.0.2
 // @author        IgorNovozhilov
 // @description   Персональная настройка Ikariam
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -26,10 +26,21 @@
     .expandable.resourceShop,
     .expandable[onclick*="premiumTrader"],
     .btnIngameCountdown.happyHour,
+    #tab_tradeAdvisor .contentBox01h:has(.premiumOffer),
+    #militaryAdvisor .contentBox01h:has(.premiumOffer),
+    #researchAdvisor .contentBox01h:has(.premiumOffer),
+    #diplomacyAdvisor .contentBox01h:has(.premiumOffer),
     .premiumOffer,
     .premiumOfferBox,
+    #researchAdvisor .premium_research_link,
+    #sidebar .accordionItem:has(#premiumAdvisorSidebar),
+    #sidebar .accordionItem:has(#ambrosiaDonateForm),
+    #setWorkersBox .adVideoPremiumOffer,
+    .buildingDescription,
+    #dailyTasks .modifiedHint:has(.adVideoButton),
     #footer {
       display: none !important;
+      _border: solid 2px #ff00ff !important;
     }
 
     #city #cityCinema,
@@ -76,6 +87,30 @@
 
     #container #breadcrumbs {
       top: 140px;
+    }
+
+    #GF_toolbar {
+      width: 100%;
+    }
+
+    #sidebarWidget {
+      padding-bottom: 0px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #sidebarWidget .accordionItem {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    #sidebarWidget .accordionItem:last-child {
+      margin-bottom: 3px;
+    }
+
+    #setWorkers .content {
+      min-height: 0;
     }
   `
 
