@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Ikariam Customizer
 // @namespace     ikariam-customizer
-// @version       0.0.4
+// @version       0.0.5
 // @author        IgorNovozhilov
 // @description   Персональная настройка Ikariam
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -26,6 +26,7 @@
     .expandable.resourceShop,
     .expandable[onclick*="premiumTrader"],
     .mainContent .center:has(a[onclick*="premium"]),
+    #multiPopup:has(a[href*="premium"]),
     .btnIngameCountdown.happyHour,
     #tab_tradeAdvisor .contentBox01h:has(.premiumOffer),
     #militaryAdvisor .contentBox01h:has(.premiumOffer),
