@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Ikariam Customizer
 // @namespace     ikariam-customizer
-// @version       0.0.5
+// @version       0.0.6
 // @author        IgorNovozhilov
 // @description   Персональная настройка Ikariam
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -32,6 +32,8 @@
     #militaryAdvisor .contentBox01h:has(.premiumOffer),
     #researchAdvisor .contentBox01h:has(.premiumOffer),
     #diplomacyAdvisor .contentBox01h:has(.premiumOffer),
+    #barracks .contentBox01h:has(.contentBoxIcon.premiumCitizens),
+    #barracks .contentBox01h:has(.contentBoxIcon.premiumDummy),
     .premiumOffer,
     .premiumOfferBox,
     #researchAdvisor .premium_research_link,
