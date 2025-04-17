@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Ikariam Customizer
 // @namespace     ikariam-customizer
-// @version       0.0.6
+// @version       0.0.7
 // @author        IgorNovozhilov
 // @description   Персональная настройка Ikariam
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -41,6 +41,9 @@
     #sidebar .accordionItem:has(#ambrosiaDonateForm),
     #setWorkersBox .adVideoPremiumOffer,
     #dailyTasks .modifiedHint:has(.adVideoButton),
+    #setPremiumTransports,
+    #mission .summaryBox .journeyPremiumTransporters,
+    #setPremiumJetPropulsion,
     #footer {
       display: none !important;
       _border: solid 2px #ff00ff !important;
