@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Ikariam Customizer
 // @namespace     ikariam-customizer
-// @version       0.0.7
+// @version       0.0.8
 // @author        IgorNovozhilov
 // @description   Персональная настройка Ikariam
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -44,6 +44,7 @@
     #setPremiumTransports,
     #mission .summaryBox .journeyPremiumTransporters,
     #setPremiumJetPropulsion,
+    .gods .buyExtensionAllowed .gracePeriodExtension,
     #footer {
       display: none !important;
       _border: solid 2px #ff00ff !important;
