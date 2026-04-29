@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          ads-yandex-games
 // @namespace     ads-yandex-games
-// @version       0.0.1
+// @version       0.0.2
 // @author        IgorNovozhilov
 // @description   Персонализация yandex-games
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -27,7 +27,11 @@
     .app__wrapper div[class*="disable-adv-button-sticky-critical-game-module__disableAdButtonContainer"],
     .app__wrapper div[class*="__action_balance"],
     .app__wrapper .stack div:has(div[class*="desktop_right adv-focusable"]),
-    .adv-focusable div[data-fullscreen-element-name="ad-content"]
+    .adv-focusable div[data-fullscreen-element-name="ad-content"],
+    .play-modal.adv-focusable .play-yandex-yandex-adaptive,
+    .prowo-container_advType_interstitial .prowo__content,
+    .prowo-container_advType_interstitial .prowo__nav,
+    .prowo-container_advType_interstitial .prowo__dots
     {
       display: none !important;
     }
@@ -42,6 +46,12 @@
     .adaptive-width .feed_block_suggested
     {
       margin-top: 0px !important;
+    }
+
+    .prowo-container_advType_interstitial .close-button
+    {
+      right: 45% !important;
+      top: 45% !important;
     }
   `
   document.head.append(style)
