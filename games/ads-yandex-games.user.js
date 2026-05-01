@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          ads-yandex-games
 // @namespace     ads-yandex-games
-// @version       0.0.2
+// @version       0.0.3
 // @author        IgorNovozhilov
 // @description   Персонализация yandex-games
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -56,19 +56,39 @@
   `
   document.head.append(style)
 
+  let observerTimer = 0
+  let prowoBTimer = 0
+  const observer = new MutationObserver(() => {
+    if (!observerTimer) observerTimer = setTimeout(onAppWrapperMutation, 10)
+  })
+
   document.addEventListener('DOMContentLoaded', () => {
     const html = document.body.innerHTML
 
     console.log('hasActivePromoEvent = ', detectClassName(html, 'change-root-page-critical-catalog-module__hasActivePromoEvent'))
 
-    setInterval(() => {
-      const advB = document.querySelector('.close-button_type_adv-fullscreen')
-
-      if (advB) {
-        // advB.click()
-      }
-    }, 1000)
+    observer.observe(document.querySelector('.app__wrapper'), { childList: true, subtree: true })
   });
+
+  function onAppWrapperMutation() {
+    const prowoB = document.querySelector('.prowo-container_advType_interstitial .close-button')
+
+    if (prowoB && !prowoBTimer) {
+      prowoBTimer = setTimeout(() => removeProwoB(prowoB), 10)
+    }
+
+    observerTimer = 0
+  }
+
+  /**
+   *
+   * @param {HTMLDivElement} prowoB
+   */
+  function removeProwoB(prowoB) {
+    prowoB.click()
+    console.log('X CLOSE --> prowoB')
+    prowoBTimer = 0
+  }
 
   /**
    * @param {string} html
