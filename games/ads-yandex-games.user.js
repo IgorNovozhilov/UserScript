@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          ads-yandex-games
 // @namespace     ads-yandex-games
-// @version       0.0.3
+// @version       0.0.4
 // @author        IgorNovozhilov
 // @description   Персонализация yandex-games
 // @homepage      https://github.com/IgorNovozhilov/UserScript
@@ -26,7 +26,7 @@
     .app__wrapper span[class*="balance-button-critical"],
     .app__wrapper div[class*="disable-adv-button-sticky-critical-game-module__disableAdButtonContainer"],
     .app__wrapper div[class*="__action_balance"],
-    .app__wrapper .stack div:has(div[class*="desktop_right adv-focusable"]),
+    .app__wrapper .stack div:has(>div[class*="adv-focusable"]):has(div[class*="desktop_right"]),
     .adv-focusable div[data-fullscreen-element-name="ad-content"],
     .play-modal.adv-focusable .play-yandex-yandex-adaptive,
     .prowo-container_advType_interstitial .prowo__content,
@@ -37,7 +37,7 @@
     }
 
     .app__wrapper > header,
-    .app__wrapper .stack div:has(div[class*="desktop_right adv-focusable"]) + div:has(iframe),
+    .app__wrapper .stack div:has(>iframe#game-frame),
     .app__wrapper .stack .play-similar-games
     {
       width: 100% !important;
